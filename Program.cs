@@ -48,6 +48,7 @@ namespace Bankamat
                             enterPasswd();
                             if(folsePasswd == true)
                             {
+                                Clear();
                                 UZB uZB = new UZB();
                                 uZB.uzb();
                             }
@@ -55,14 +56,24 @@ namespace Bankamat
                     case 2:
                         {
                             Clear();
-                            RU rU = new RU();
-                            rU.ru();
+                            enterPasswd();
+                            if (folsePasswd == true)
+                            {
+                                Clear();
+                                RU rU = new RU();
+                                rU.ru();
+                            }
                         }; break;
                     case 3:
                         {
                             Clear();
-                            ENG eNG = new ENG();
-                            eNG.eng();
+                            enterPasswd();
+                            if (folsePasswd == true)
+                            {
+                                Clear();
+                                ENG eNG = new ENG();
+                                eNG.eng();  
+                            }
                         }; break;
                     default: Clear(); goto metka;
                 }
@@ -87,7 +98,7 @@ namespace Bankamat
                     }; break;
                 case 3:
                     {
-                        Write(passTxt[1]);
+                        Write(passTxt[2]);
                     }; break;
             }
             try

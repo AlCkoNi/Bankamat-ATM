@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Diagnostics.Contracts;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Channels;
 using static System.Console;
 
@@ -6,7 +7,7 @@ namespace Bankamat
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args)//Run time
         {
             Menu menu = new Menu();
             menu.startMenu();
@@ -23,14 +24,52 @@ namespace Bankamat
         public readonly string[] menuS = {" 1.Hisobingizdi korish \n 2.Naqt pul yechish \n 3.Pul tashlash \n 4.Sms hizmatlari \n 5.Parolni almashtirish",
                                           " 1.Посмотреть баланс \n 2.Выдача наличных \n 3.Отправка средств \n 4.СМС услуги \n 5.Смена пороля",
                                           " 1.Check your balans \n 2.Givs nul maney \n 3.Pay money \n 4.Sms function \n 5.Update your password"};
+        public readonly string[] lookBalans = { "  Sizning hisobingizda - ", " \nНа вашем шету - ", " \nYou have got - "};
     }
     public class Menu : Language
     {
-        int choseLang;
-        bool folsePasswd = false;
+        static int choseLang;//Переменая для выбора языка
+        int choseMenu1;//Переменая для выбора пункта меню
+        public static int passwdForEnter = 1111;//Пароль неизменая //Exepation with 0000
+        static bool folsePasswd = false;//Переменая для утверждения пароля
+        static double Balans = 100000;//Переменая для баланса
+        public void viborMenu() //Меню для выбора
+        {
+            try
+            {
+                choseMenu1 = int.Parse(ReadLine()!);
+                switch (choseMenu1)
+                {
+                    case 1:
+                        {
+                            balans();
+                        }break;
+                        case 2:
+                        {
+                            money();
+                        }break;
+                        case 3:
+                        {
+                            sendMoney();
+                        }break;
+                        case 4:
+                        {
+                            sms();
+                        }break;
+                        case 5:
+                        {
+                            password();
+                        }break;
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteLine(ex.ToString());
+            }
+        }
         public void startMenu() // Меню окно выброра
         {
-            metka:
+        metka:
             for (int i = 0; i < chose.Length; i++)//Вывод выбора языка
             {
                 Write(chose[i]);
@@ -45,8 +84,8 @@ namespace Bankamat
                     case 1:
                         {
                             Clear();
-                            enterPasswd();
-                            if(folsePasswd == true)
+                            EnterPasswd();
+                            if (folsePasswd == true)
                             {
                                 Clear();
                                 UZB uZB = new UZB();
@@ -56,7 +95,7 @@ namespace Bankamat
                     case 2:
                         {
                             Clear();
-                            enterPasswd();
+                            EnterPasswd();
                             if (folsePasswd == true)
                             {
                                 Clear();
@@ -67,26 +106,66 @@ namespace Bankamat
                     case 3:
                         {
                             Clear();
-                            enterPasswd();
+                            EnterPasswd();
                             if (folsePasswd == true)
                             {
                                 Clear();
                                 ENG eNG = new ENG();
-                                eNG.eng();  
+                                eNG.eng();
                             }
                         }; break;
                     default: Clear(); goto metka;
                 }
-            }catch (Exception e)
+            }
+            catch (Exception e)
             {
                 WriteLine(e);
             }
         }
-        public int passwdForEnter = 1111;//Пароль неизменая //Exepation with 0000
-        public void enterPasswd()//Функция проверки пороля
+        /*public void startMenu() // Меню окно выброра
         {
-            metka:
-            switch(choseLang)//Приведствие
+            bool validSelection = false;
+            while (!validSelection)
+            {
+                for (int i = 0; i < chose.Length; i++)//Вывод выбора языка
+                {
+                    Write(chose[i]);
+                }
+                WriteLine();
+                Write(" -= : ");
+                if (int.TryParse(ReadLine(), out choseLang) && choseLang >= 1 && choseLang <= 3)
+                {
+                    Clear();
+                    EnterPasswd();
+                    if (folsePasswd)
+                    {
+                        Clear();
+                        switch (choseLang)
+                        {
+                            case 1:
+                                new UZB().uzb();
+                                break;
+                            case 2:
+                                new RU().ru();
+                                break;
+                            case 3:
+                                new ENG().eng();
+                                break;
+                        }
+                    }
+                    validSelection = true;
+                }
+                else
+                {
+                    Clear();
+                    WriteLine("Invalid input. Please try again.");
+                }
+            }
+        }*/
+        public void EnterPasswd()//Функция проверки пороля
+        {
+        metka:
+            switch (choseLang)//Приведствие
             {
                 case 1:
                     {
@@ -104,7 +183,7 @@ namespace Bankamat
             try
             {
                 int passwdEnter = int.Parse(ReadLine()!);
-                if(passwdEnter == passwdForEnter)
+                if (passwdEnter == passwdForEnter)
                 {
                     folsePasswd = true;
                 }
@@ -133,10 +212,72 @@ namespace Bankamat
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 WriteLine(e);
             }
+        }
+        /*public void EnterPasswd()//Функция проверки пароля
+        {
+            bool correctPassword = false;
+            while (!correctPassword)
+            {
+                WriteLine(passTxt[choseLang - 1]);
+                if (int.TryParse(ReadLine(), out int passwdEnter) && passwdEnter == passwdForEnter)
+                {
+                    folsePasswd = true;
+                    correctPassword = true;
+                }
+                else
+                {
+                    Clear();
+                    WriteLine(passTxtIsNotTrue[choseLang - 1]);
+                }
+            }
+        }*/
+        public void balans()//Просмотр баланса
+        {
+                switch (choseLang)
+                {
+                    case 1:
+                        {
+                            Clear();
+                            Write("   "+welcom[0]);
+                            Write("   \n\n"+lookBalans[0]+ Balans +" som bor");
+                            
+                        }
+                        break;
+                    case 2:
+                        {
+                            Clear();
+                            Write("   " + welcom[1]);
+                            Write("   \n" + lookBalans[1] + Balans + " сум усть");
+                    }
+                        break;
+                    case 3:
+                        {
+                            Clear();
+                            Write("   " + welcom[2]);
+                            Write("   \n" + lookBalans[2] + Balans + " som");
+                    }
+                        break;
+                }            
+        }
+        public void money()
+        {
+            WriteLine("Money");
+        }
+        public void sendMoney() 
+        {
+            WriteLine("Send money");
+        }
+        public void sms()
+        {
+            WriteLine("sms");
+        }
+        public void password()
+        {
+            WriteLine("Passwd");
         }
     }
     public class UZB : Language // Локализация Узбекского языка
@@ -144,6 +285,8 @@ namespace Bankamat
         public void uzb()
         {
             Write($"{welcom[0]}\n\n{choseMenu[0]}\n\n{menuS[0]}\n\n -= : ");
+            Menu menu = new Menu();
+            menu.viborMenu();
         }
     }
     public class RU : Language // Локализация Русскаого языка
@@ -151,6 +294,8 @@ namespace Bankamat
         public void ru()
         {
             Write($"{welcom[1]}\n\n{choseMenu[1]}\n\n{menuS[1]}\n\n -= : ");
+            Menu menu = new Menu();
+            menu.viborMenu();
         }
     }
     public class ENG : Language  // Локализация Ангийского языка
@@ -158,6 +303,8 @@ namespace Bankamat
         public void eng()
         {
             Write($"{welcom[2]}\n\n{choseMenu[2]}\n\n{menuS[2]}\n\n -= : ");
+            Menu menu = new Menu();
+            menu.viborMenu();
         }
     }
 }

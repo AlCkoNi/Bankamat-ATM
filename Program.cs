@@ -24,7 +24,7 @@ namespace Bankamat
         public readonly string[] menuS = {" 1.Hisobingizdi korish \n 2.Naqt pul yechish \n 3.Pul tashlash \n 4.Sms hizmatlari \n 5.Parolni almashtirish",
                                           " 1.Посмотреть баланс \n 2.Выдача наличных \n 3.Отправка средств \n 4.СМС услуги \n 5.Смена пороля",
                                           " 1.Check your balans \n 2.Givs nul maney \n 3.Pay money \n 4.Sms function \n 5.Update your password"};
-        public readonly string[] lookBalans = { "  Sizning hisobingizda - ", " \nНа вашем шету - ", " \nYou have got - "};
+        public readonly string[] lookBalans = { "  Sizning hisobingizda - ", "   На вашем шету - ", "  You have got - "};
     }
     public class Menu : Language
     {
@@ -122,46 +122,6 @@ namespace Bankamat
                 WriteLine(e);
             }
         }
-        /*public void startMenu() // Меню окно выброра
-        {
-            bool validSelection = false;
-            while (!validSelection)
-            {
-                for (int i = 0; i < chose.Length; i++)//Вывод выбора языка
-                {
-                    Write(chose[i]);
-                }
-                WriteLine();
-                Write(" -= : ");
-                if (int.TryParse(ReadLine(), out choseLang) && choseLang >= 1 && choseLang <= 3)
-                {
-                    Clear();
-                    EnterPasswd();
-                    if (folsePasswd)
-                    {
-                        Clear();
-                        switch (choseLang)
-                        {
-                            case 1:
-                                new UZB().uzb();
-                                break;
-                            case 2:
-                                new RU().ru();
-                                break;
-                            case 3:
-                                new ENG().eng();
-                                break;
-                        }
-                    }
-                    validSelection = true;
-                }
-                else
-                {
-                    Clear();
-                    WriteLine("Invalid input. Please try again.");
-                }
-            }
-        }*/
         public void EnterPasswd()//Функция проверки пороля
         {
         metka:
@@ -217,51 +177,71 @@ namespace Bankamat
                 WriteLine(e);
             }
         }
-        /*public void EnterPasswd()//Функция проверки пароля
-        {
-            bool correctPassword = false;
-            while (!correctPassword)
-            {
-                WriteLine(passTxt[choseLang - 1]);
-                if (int.TryParse(ReadLine(), out int passwdEnter) && passwdEnter == passwdForEnter)
-                {
-                    folsePasswd = true;
-                    correctPassword = true;
-                }
-                else
-                {
-                    Clear();
-                    WriteLine(passTxtIsNotTrue[choseLang - 1]);
-                }
-            }
-        }*/
         public void balans()//Просмотр баланса
         {
-                switch (choseLang)
-                {
-                    case 1:
+            switch (choseLang)
+            {
+                case 1:
+                    {
+                        metka:
+                        Clear();
+                        Write("   " + welcom[0]);
+                        Write("   \n\n" + lookBalans[0] + Balans + " som bor\n\n");
+                        Write("  <-- ");
+                        string a = ReadLine()!;
+                        if(a == string.Empty)
                         {
                             Clear();
-                            Write("   "+welcom[0]);
-                            Write("   \n\n"+lookBalans[0]+ Balans +" som bor");
-                            
+                            Write($"  {welcom[0]} \n\n{menuS[0]} \n\n =- ");
+                            viborMenu();
                         }
-                        break;
-                    case 2:
+                        else
+                        {
+                            goto metka;
+                        }
+                    }
+                    break;
+                case 2:
+                    {
+                        metka:
+                        Clear();
+                        Write("   " + welcom[1]);
+                        Write("   \n\n" + lookBalans[1] + Balans + " сум есть\n\n");
+                        Write("  <-- ");
+                        string a = ReadLine()!;
+                        if (a == string.Empty)
                         {
                             Clear();
-                            Write("   " + welcom[1]);
-                            Write("   \n" + lookBalans[1] + Balans + " сум усть");
+                            Write($"  {welcom[1]} \n\n{menuS[1]} \n\n =- ");
+                            viborMenu();
+                        }
+                        else
+                        {
+                            goto metka;
+                        }
                     }
-                        break;
-                    case 3:
+                    break;
+                case 3:
+                    {
+                        metka:
+                        Clear();
+                        Write("   " + welcom[2]);
+                        Write("   \n\n" + lookBalans[2] + Balans + " som\n\n");
+                        Write("  <-- ");
+                        string a = ReadLine()!;
+                        if (a == string.Empty)
                         {
                             Clear();
-                            Write("   " + welcom[2]);
-                            Write("   \n" + lookBalans[2] + Balans + " som");
+                            Write($"  {welcom[2]} \n\n{menuS[2]} \n\n =- ");
+                            viborMenu();
+                        }
+                        else
+                        {
+                            goto metka;
+                        }
                     }
-                        break;
-                }            
+                    break;
+            }
         }
         public void money()
         {
